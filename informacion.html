@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sobre el Proyecto</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="sobre-body">
+
+    <div id="menu-container"></div>
+
+    <!-- TÍTULO FIJO -->
+    <h1 class="sobre-titulo">Sobre el Proyecto</h1>
+
+    <!-- TEXTO -->
+    <div class="sobre-contenido">
+        <p id="textoAnimado"></p>
+    </div>
+    <div class="credito">
+    Created by Marco A. G. F.
+</div>
+
+    <script src="js/menu.js"></script>
+
+    <script>
+        const texto = `Sistema: Salón de la Historia de los Videojuegos
+
+
+Este sistema permite la exploración de la evolución del videojuego a través de distintas eras. Desde los primeros experimentos digitales hasta los mundos abiertos hiperrealistas de la actualidad.
+
+Módulos disponibles:
+- Orígenes del videojuego
+- Edad dorada del gaming
+- Revolución del 3D
+- Era moderna y realidad virtual
+
+Cada módulo representa un salto tecnológico y creativo en la industria del entretenimiento digital.
+
+Exploración libre activada.
+Disfruta del recorrido.`;
+
+        const contenedor = document.getElementById("textoAnimado");
+
+        let i = 0;
+
+        function escribir() {
+    if (i < texto.length) {
+
+        let char = texto.charAt(i);
+
+        if (char === "\n") {
+            contenedor.innerHTML += "<br>";
+        } else {
+            contenedor.innerHTML += char;
+        }
+
+        i++;
+        setTimeout(escribir, 25);
+    }
+}
+        escribir();
+    </script>
+
+</body>
+
+</html>

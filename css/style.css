@@ -230,6 +230,9 @@ input:checked + .slider:before{
 }
 
 
+
+
+
 /*parrafo de texto y titulo*/
 .sobre-body{
     margin:0;
@@ -295,4 +298,329 @@ input:checked + .slider:before{
     letter-spacing:1px;
 
     z-index:10;
+}
+
+/*-------------------titulo de cada cuarto*/
+.tituloEtapa {
+    position: fixed;
+
+    top: 25px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    color: black; 
+
+    font-size: 50px;
+
+    text-align: center;
+
+    text-shadow:
+        0 0 5px #00e5ff,
+        0 0 10px #00e5ff,
+        0 0 20px #00e5ff;
+
+    z-index: 800;
+
+    margin: 0;
+
+    pointer-events: none;
+}
+/*----------------boton desplegable de cada cuarto*/
+
+.infoBtn {
+    position: fixed;
+
+    bottom: 25px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    padding: 12px 35px;
+
+    background: rgba(0, 0, 0, 0.25);
+
+    color: #0077b6;
+
+    border: 2px solid #0077b6;
+
+    border-radius: 8px;
+
+    font-size: 18px;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    text-shadow:
+        0 0 5px #0077b6,
+        0 0 10px #0077b6;
+
+    box-shadow:
+        0 0 8px rgba(0, 119, 182, 0.5);
+
+    z-index: 1000;
+
+    transition: 
+        bottom 0.8s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+.infoBtn:hover {
+    background: rgba(0, 119, 182, 0.15);
+
+    box-shadow:
+        0 0 15px rgba(0, 119, 182, 0.8);
+}
+
+/* ======================================
+   PANEL DE INFORMACIÓN
+====================================== */
+
+.infoPanel {
+    position: fixed;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 100%;
+
+    /* Transparente, sin oscurecer */
+    background: rgba(255, 255, 255, 0.03);
+
+    /* Desenfoque del cuarto */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    z-index: 900;
+
+    transform: translateY(100%);
+
+    transition: transform 0.8s ease;
+
+    overflow-y: auto;
+}
+
+
+/* PANEL ABIERTO */
+
+.infoPanel.abierto {
+    transform: translateY(0);
+}
+
+
+.infoContenido {
+    width: 75%;
+
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding-top: 120px;
+    padding-bottom: 120px;
+
+    color: white;
+
+    font-size: 20px;
+
+    line-height: 1.7;
+}
+
+
+.infoContenido h2 {
+    text-align: center;
+
+    color: #0077b6;
+
+    font-size: 40px;
+
+    margin-bottom: 40px;
+
+    text-shadow:
+        0 0 5px #0077b6,
+        0 0 15px #0077b6,
+        0 0 30px #0077b6;
+}
+
+.infoContenido p {
+    margin-bottom: 30px;
+
+    text-align: justify;
+}
+
+
+/* ======================================
+   CONTENIDO HISTÓRICO
+====================================== */
+
+.seccionHistoria {
+    margin-bottom: 70px;
+}
+
+.seccionHistoria h3,
+.objetoHistoria h3 {
+    color: white;
+
+    font-size: 28px;
+
+    margin-bottom: 20px;
+
+    text-shadow:
+        0 0 5px #0077b6,
+        0 0 10px #0077b6;
+}
+
+
+.seccionHistoria p {
+    font-size: 20px;
+
+    line-height: 1.8;
+
+    text-align: justify;
+
+    color: #eeeeee;
+
+    margin: 0;
+}
+
+
+/* ======================================
+   ESPACIO PARA MODELOS 3D
+====================================== */
+
+.objetoHistoria {
+    margin-bottom: 80px;
+
+    text-align: center;
+}
+
+
+.modelo3D {
+    width: 100%;
+    height: 350px;
+
+    margin-top: 50px;
+
+    background: transparent;
+
+    border: none;
+
+    overflow: visible;
+
+    cursor: grab;
+}
+
+.modelo3D:active {
+    cursor: grabbing;
+}
+
+
+/* ======================================
+   CONTROL DE ROTACIÓN
+====================================== */
+
+.controlRotacion {
+    text-align: center;
+
+    margin-top: -20px;
+
+    margin-bottom: 70px;
+}
+
+.controlRotacion label {
+    display: block;
+
+    color: #0077b6;
+
+    font-size: 16px;
+
+    margin-bottom: 10px;
+
+    text-shadow:
+        0 0 5px #0077b6,
+        0 0 10px #0077b6;
+}
+
+
+.controlRotacion input {
+    width: 250px;
+
+    cursor: pointer;
+}
+
+
+.objetoHistoria {
+    width: 90%;
+    margin: 40px auto;
+    text-align: center;
+}
+
+
+.modelosFila {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 60px;
+    width: 100%;
+}
+
+
+.modeloItem {
+    width: 40%;
+    text-align: center;
+}
+
+
+.modeloItem h4 {
+    margin-bottom: 15px;
+    font-size: 24px;
+    font-weight: normal;
+    letter-spacing: 2px;
+}
+
+.enlaceHistoria {
+    display: block;
+
+    width: fit-content;
+
+    margin: 40px auto 20px auto;
+
+    color: #00aaff;
+
+    font-size: 20px;
+
+    text-decoration: none;
+
+    letter-spacing: 2px;
+
+    transition: 0.3s;
+}
+
+.enlaceHistoria:hover {
+    color: #ffffff;
+
+    text-shadow:
+        0 0 8px #00aaff,
+        0 0 18px #00aaff;
+}
+
+#escenarioVR {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+}
+
+#escenarioVR canvas {
+    display: block;
+
+    width: 100%;
+    height: 100%;
 }

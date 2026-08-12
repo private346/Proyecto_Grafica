@@ -184,6 +184,15 @@ scene.add(rightWall);
 const loader = new GLTFLoader();
 
 
+
+
+
+
+
+
+
+
+
 //pared atras
 const backWall = new THREE.Mesh(
     new THREE.PlaneGeometry(12, 8),

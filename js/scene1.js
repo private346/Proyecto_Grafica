@@ -33,7 +33,7 @@ document.body.appendChild(renderer.domElement);
 //letras
 const fontLoader = new FontLoader();
 
-fontLoader.load(
+/*fontLoader.load(
     'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/fonts/helvetiker_regular.typeface.json',
     function (font) {
 
@@ -61,7 +61,7 @@ fontLoader.load(
         scene.add(textMesh);
         
     }
-);
+);*/
 
 
 
@@ -179,6 +179,392 @@ rightWall.position.y = 4;
 scene.add(rightWall);
 
 const loader = new GLTFLoader();
+
+//---------------------------------------------------------------------------------
+// ======================================
+// FUNCIÓN REUTILIZABLE PARA MODELOS 3D
+// ======================================
+
+function crearModelo3D(
+    idContenedor,
+    rutaModelo,
+    velocidad = 0.01,
+    rotacionX = 0,
+    rotacionY = 0,
+    rotacionZ = 0
+) {
+
+    const contenedorModelo =
+        document.getElementById(idContenedor);
+
+    if (!contenedorModelo) {
+
+        console.error(
+            "No se encontró el contenedor:",
+            idContenedor
+        );
+
+        return;
+    }
+
+
+    // ======================================
+    // ESCENA
+    // ======================================
+
+    const escenaModelo = new THREE.Scene();
+
+    let modeloActual = null;
+
+
+    // ======================================
+    // CÁMARA
+    // ======================================
+
+    const camaraModelo =
+        new THREE.PerspectiveCamera(
+            45,
+            contenedorModelo.clientWidth /
+            contenedorModelo.clientHeight,
+            0.1,
+            1000
+        );
+
+
+    // ======================================
+    // RENDERER
+    // ======================================
+
+    const rendererModelo =
+        new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true
+        });
+
+    rendererModelo.setSize(
+        contenedorModelo.clientWidth,
+        contenedorModelo.clientHeight
+    );
+
+    rendererModelo.setPixelRatio(
+        window.devicePixelRatio
+    );
+
+    contenedorModelo.appendChild(
+        rendererModelo.domElement
+    );
+
+
+    // ======================================
+    // LUCES
+    // ======================================
+
+    const luzAmbienteModelo =
+        new THREE.AmbientLight(
+            0xffffff,
+            3
+        );
+
+    escenaModelo.add(
+        luzAmbienteModelo
+    );
+
+
+    const luzModelo =
+        new THREE.DirectionalLight(
+            0xffffff,
+            5
+        );
+
+    luzModelo.position.set(
+        5,
+        5,
+        5
+    );
+
+    escenaModelo.add(
+        luzModelo
+    );
+
+
+    // ======================================
+    // CARGAR MODELO GLB
+    // ======================================
+
+    console.log(
+        "Intentando cargar:",
+        rutaModelo
+    );
+
+    loader.load(
+
+        rutaModelo,
+
+        function (gltf) {
+
+            console.log(
+                "Modelo cargado correctamente:",
+                rutaModelo
+            );
+
+
+            // ======================================
+            // OBTENER MODELO
+            // ======================================
+
+            const modelo =
+                gltf.scene;
+
+            modeloActual =
+                modelo;
+                modelo.rotation.x = rotacionX;
+modelo.rotation.y = rotacionY;
+modelo.rotation.z = rotacionZ;
+
+            escenaModelo.add(
+                modelo
+            );
+
+
+            // ======================================
+            // CALCULAR TAMAÑO ORIGINAL
+            // ======================================
+
+            const caja =
+                new THREE.Box3()
+                .setFromObject(modelo);
+
+            const tamaño =
+                caja.getSize(
+                    new THREE.Vector3()
+                );
+
+
+            console.log(
+                "Tamaño original:",
+                tamaño
+            );
+
+
+            // ======================================
+            // ESCALAR MODELO
+            // ======================================
+
+            const mayor =
+                Math.max(
+                    tamaño.x,
+                    tamaño.y,
+                    tamaño.z
+                );
+
+            const escala =
+                3 / mayor;
+
+            modelo.scale.set(
+                escala,
+                escala,
+                escala
+            );
+
+
+            // ======================================
+            // CENTRAR MODELO
+            // DESPUÉS DE ESCALAR
+            // ======================================
+
+            const cajaFinal =
+                new THREE.Box3()
+                .setFromObject(modelo);
+
+            const centroFinal =
+                cajaFinal.getCenter(
+                    new THREE.Vector3()
+                );
+
+
+            modelo.position.x -=
+                centroFinal.x;
+
+            modelo.position.y -=
+                centroFinal.y;
+
+            modelo.position.z -=
+                centroFinal.z;
+
+
+            // ======================================
+            // CALCULAR TAMAÑO FINAL
+            // ======================================
+
+            const cajaAjustada =
+                new THREE.Box3()
+                .setFromObject(modelo);
+
+            const tamañoFinal =
+                cajaAjustada.getSize(
+                    new THREE.Vector3()
+                );
+
+
+            const mayorFinal =
+                Math.max(
+                    tamañoFinal.x,
+                    tamañoFinal.y,
+                    tamañoFinal.z
+                );
+
+
+            // ======================================
+            // AJUSTAR CÁMARA
+            // ======================================
+
+            const distanciaCamara =
+                mayorFinal * 1.8;
+
+
+            camaraModelo.position.set(
+                0,
+                0,
+                distanciaCamara
+            );
+
+
+            camaraModelo.lookAt(
+                0,
+                0,
+                0
+            );
+
+
+            console.log(
+                "Modelo preparado para visualizarse"
+            );
+
+        },
+
+
+        undefined,
+
+
+        function (error) {
+
+            console.error(
+                "Error cargando el modelo:",
+                rutaModelo,
+                error
+            );
+
+        }
+
+    );
+
+
+    // ======================================
+    // ANIMACIÓN DEL MODELO
+    // ======================================
+
+    function animarModelo() {
+
+        requestAnimationFrame(
+            animarModelo
+        );
+
+
+        if (modeloActual) {
+
+            modeloActual.rotation.y +=
+                velocidad;
+
+        }
+
+
+        rendererModelo.render(
+            escenaModelo,
+            camaraModelo
+        );
+
+    }
+
+
+    animarModelo();
+
+
+    // ======================================
+    // RESPONSIVE
+    // ======================================
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            if (!contenedorModelo)
+                return;
+
+
+            camaraModelo.aspect =
+                contenedorModelo.clientWidth /
+                contenedorModelo.clientHeight;
+
+
+            camaraModelo.updateProjectionMatrix();
+
+
+            rendererModelo.setSize(
+                contenedorModelo.clientWidth,
+                contenedorModelo.clientHeight
+            );
+
+        }
+    );
+
+}
+
+
+// ======================================
+// MODELO SPACEWAR
+// ======================================
+
+crearModelo3D(
+    "spacewar",
+    "./models/spacewar.glb",
+    0.01
+);
+// ======================================
+// MODELO PONG
+// ======================================
+
+crearModelo3D(
+    "pong",
+    "./models/pongarcade.glb",
+    0.005
+);
+// ======================================
+// MODELO atari
+// ======================================
+
+crearModelo3D(
+    "atari",
+    "./models/atari.glb",
+    0.005,
+    0.5
+);
+
+// ======================================
+// MODELO magnavox
+// ======================================
+
+crearModelo3D(
+    "magnavox",
+    "./models/magnavox.glb",
+    0.005,
+    0.5
+);
+
+
+
+//----------------------------------------------------------------------
+
+
 
 
 //pared atras
@@ -373,6 +759,34 @@ backBtn.addEventListener("click", () => {
 
 // boton atras
 const backBtn1 = document.getElementById("backBtn1");
+
+//-----------------boton desplegable
+const infoBtn = document.getElementById("infoBtn");
+const infoPanel = document.getElementById("infoPanel");
+
+infoBtn.addEventListener("click", () => {
+
+    if (infoBtn.classList.contains("abierto")) {
+
+        // CERRAR INFORMACIÓN
+
+        infoBtn.classList.remove("abierto");
+        infoPanel.classList.remove("abierto");
+
+        infoBtn.textContent = "▼ VER HISTORIA";
+
+    } else {
+
+        // ABRIR INFORMACIÓN
+
+        infoBtn.classList.add("abierto");
+        infoPanel.classList.add("abierto");
+
+        infoBtn.textContent = "▲ REGRESAR";
+
+    }
+
+});
 
 backBtn1.addEventListener("click", () => {
     sessionStorage.setItem("returnToTV", "true");

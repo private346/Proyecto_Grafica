@@ -628,6 +628,100 @@ scene.add(backWall);
 
 
 
+
+
+
+
+
+
+
+// ======================================
+// PANTALLA DE VIDEO - CUARTO 1
+// ======================================
+
+const video = document.createElement("video");
+
+video.src = "./videos/Parte 3.mp4";
+
+video.loop = true;
+video.muted = false;
+video.playsInline = true;
+
+// Cuando el video carga correctamente
+video.addEventListener("loadeddata", () => {
+
+    console.log("VIDEO CARGADO CORRECTAMENTE");
+
+    video.play()
+        .then(() => {
+            console.log("VIDEO REPRODUCIÉNDOSE");
+        })
+        .catch((error) => {
+            console.error("NO SE PUDO REPRODUCIR EL VIDEO:", error);
+        });
+
+});
+
+// Si ocurre un error
+video.addEventListener("error", (error) => {
+
+    console.error("ERROR AL CARGAR EL VIDEO:", error);
+
+});
+
+
+// ======================================
+// TEXTURA DEL VIDEO
+// ======================================
+
+const videoTexture = new THREE.VideoTexture(video);
+
+videoTexture.colorSpace = THREE.SRGBColorSpace;
+
+
+// ======================================
+// MATERIAL
+// ======================================
+
+const videoMaterial = new THREE.MeshBasicMaterial({
+    map: videoTexture
+});
+
+
+// ======================================
+// PANTALLA
+// ======================================
+
+const videoScreen = new THREE.Mesh(
+    new THREE.PlaneGeometry(10.5, 7),
+    videoMaterial
+);
+
+
+// ======================================
+// POSICIÓN
+// ======================================
+
+videoScreen.position.set(
+    0,
+    4,
+    -5
+);
+
+videoScreen.rotation.y = 0;
+
+
+// ======================================
+// AGREGAR A LA ESCENA
+// ======================================
+
+scene.add(videoScreen);
+
+console.log("PANTALLA DE VIDEO CREADA");
+
+
+
+
 //poster
 const posterTexture = textureLoader.load(
     './models/textures/mario64.jpg'

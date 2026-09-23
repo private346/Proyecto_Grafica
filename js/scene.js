@@ -317,6 +317,29 @@ loader.load(
     }
 );
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // taburete
 let taburete;
 
@@ -471,6 +494,67 @@ const room2Btn = document.getElementById("room2Btn");
 const room3Btn = document.getElementById("room3Btn");
 const room4Btn = document.getElementById("room4Btn");
 
+
+// ======================================
+// VIDEO EN LA TV PRINCIPAL
+// ======================================
+
+const video = document.createElement("video");
+
+video.src = "./videos/Principal.mp4";
+
+video.loop = true;
+video.muted = true;
+video.playsInline = true;
+
+const videoTexture = new THREE.VideoTexture(video);
+
+videoTexture.colorSpace = THREE.SRGBColorSpace;
+
+const videoMaterial = new THREE.MeshBasicMaterial({
+    map: videoTexture
+});
+
+const videoScreen = new THREE.Mesh(
+    new THREE.PlaneGeometry(11, 5.9),
+    videoMaterial
+);
+
+videoScreen.position.set(
+    5.949,
+    4.3,
+    0
+);
+
+videoScreen.rotation.y = -Math.PI / 2;
+
+// Oculto al inicio
+videoScreen.visible = false;
+
+scene.add(videoScreen);
+
+
+// ======================================
+// INICIAR VIDEO AL PRESIONAR INICIAR
+// ======================================
+
+startBtn.addEventListener("click", () => {
+
+    videoScreen.visible = true;
+
+    video.currentTime = 0;
+    video.muted = false;
+
+    video.play()
+        .then(() => {
+            console.log("VIDEO PRINCIPAL REPRODUCIÉNDOSE CON AUDIO");
+        })
+        .catch((error) => {
+            console.error("NO SE PUDO REPRODUCIR EL VIDEO:", error);
+        });
+
+});
+
 if (returnToTV) {
 
     camera.position.set(0.2, 3.5, 0.1);
@@ -483,6 +567,28 @@ if (returnToTV) {
     room2Btn.style.display = "block";
     room3Btn.style.display = "block";
     room4Btn.style.display = "block";
+
+
+
+
+
+
+    videoScreen.visible = true;
+
+video.currentTime = 0;
+video.muted = false;
+
+video.play()
+    .then(() => {
+        console.log("VIDEO PRINCIPAL REPRODUCIÉNDOSE AL REGRESAR DEL CUARTO");
+    })
+    .catch((error) => {
+        console.error("NO SE PUDO REPRODUCIR EL VIDEO:", error);
+    });
+
+
+
+    
 
 } else {
 
@@ -512,6 +618,13 @@ startBtn.addEventListener("click", () => {
 // 🔙 Volver a vista inicial
 backBtn.addEventListener("click", () => {
 
+    // Detener y ocultar el video
+    video.pause();
+    video.currentTime = 0;
+    video.muted = true;
+    videoScreen.visible = false;
+
+    // Movimiento de cámara
     targetPosition.set(0, 3, 3);
     targetLookAt.set(0, 3.5, -6);
 
@@ -519,6 +632,7 @@ backBtn.addEventListener("click", () => {
 
     backBtn.style.display = "none";
     startBtn.style.display = "block";
+
     room1Btn.style.display = "none";
     room2Btn.style.display = "none";
     room3Btn.style.display = "none";
